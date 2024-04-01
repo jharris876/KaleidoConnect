@@ -7,12 +7,43 @@
     <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
-    <form action="upload.php" method="post" enctype="multipart/form-data" class="upload-form">
+    <form id="uploadForm" class="upload-form">
         <h2>Upload Form</h2>
         <input type="text" name="name" placeholder="Name">
         <input type="file" name="document">
-        <button type="submit" name="submit">Upload</button>
+        <button type="submit">Upload</button>
     </form>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent the default form submission
+            
+            const formData = new FormData();
+            const name = e.target.name.value;
+            const document = e.target.document.files[0];
+            
+            formData.append('name', name);
+            formData.append('document', document);
+
+            // Replace `your_kaleido_api_endpoint` with your actual Kaleido API endpoint
+            // Adjust headers and method according to your API requirements
+            fetch('https://u0olkijmyq-u0alug2exc-documentstore.us0-aws.kaleido.io/api/v1', {
+                method: 'POST',
+                body: formData,
+                // Include headers if needed by your API
+                // headers: { 
+                //   'Authorization': 'Bearer your_token_here',
+                // }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
 </body>
 </html>
-
