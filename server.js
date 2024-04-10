@@ -3,14 +3,13 @@ const multer = require('multer');
 const fetch = require('node-fetch');
 const fs = require('fs');
 require('dotenv').config();
-
 const app = express();
 const upload = multer({ dest: 'uploads/' }); // Files will be temporarily stored in 'uploads' folder
 
 app.get('/', (req, res) => {
     res.sendFile('./main.html', { root: __dirname });
   });
-  
+
 app.post('/upload', upload.single('document'), async (req, res) => {
     const { originalname, path: tempPath } = req.file;
     const { name } = req.body;
@@ -45,6 +44,5 @@ app.post('/upload', upload.single('document'), async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
-
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
