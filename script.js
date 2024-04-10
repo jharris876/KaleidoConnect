@@ -14,12 +14,12 @@ document.getElementById('uploadForm').addEventListener('submit', function(event)
     })
     .then(data => {
         console.log(data);
-        // Here you could add a message to the page to indicate success.
+        //Success
         alert('File uploaded successfully!');
     })
     .catch(error => {
         console.error('Error:', error);
-        // Here you would handle an error and possibly display it.
+        //Fail 
         alert('Upload failed: ' + error.message);
     });
 });

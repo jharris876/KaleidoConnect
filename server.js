@@ -4,6 +4,7 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 require('dotenv').config();
 const app = express();
+app.use(express.static(__dirname));
 const upload = multer({ dest: 'uploads/' }); // Files will be temporarily stored in 'uploads' folder
 
 app.get('/', (req, res) => {
@@ -24,7 +25,7 @@ app.post('/upload', upload.single('document'), async (req, res) => {
             method: 'POST',
             headers: {
                 'Authorization': `Basic ${auth}`,
-                // Add any other headers required by Kaleido
+                
             },
             body: JSON.stringify({
                 name: name, // Use the file name input from the form
