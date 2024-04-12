@@ -15,7 +15,10 @@ app.post('/upload', upload.single('document'), async (req, res) => {
     const { originalname, path: tempPath } = req.file;
     const { name } = req.body;
 
-    const auth = Buffer.from(`${process.env.KALEIDO_USERNAME}:${process.env.KALEIDO_PASSWORD}`).toString('base64');
+    const username = process.env.KALEIDO_USERNAME;
+    const password = process.env.KALEIDO_PASSWORD;
+
+    const auth = Buffer.from('${username}:${password}').toString('base64');
 
     try {
         // Read the file from the temporary path
@@ -24,7 +27,8 @@ app.post('/upload', upload.single('document'), async (req, res) => {
         const kaleidoResponse = await fetch('https://u0olkijmyq-u0alug2exc-documentstore.us0-aws.kaleido.io/api/v1', {
             method: 'POST',
             headers: {
-                'Authorization' : 'Basic ' + auth,
+                'Authorization' : 'Basic ${auth}',
+                'Content-Type' : 'application/json'
             },
             body: JSON.stringify({
                 name: name, // Use the file name input from the form
