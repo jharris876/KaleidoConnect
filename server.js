@@ -24,7 +24,7 @@ app.post('/upload', upload.single('document'), async (req, res) => {
         // Read the file from the temporary path
         const fileData = fs.readFileSync(tempPath);
 
-        const kaleidoResponse = await fetch('https://u0olkijmyq-u0alug2exc-documentstore.us0-aws.kaleido.io/api/v1', {
+        const kaleidoResponse = await fetch('https://u0olkijmyq-u0jt57ylcx-connect.us0-aws.kaleido.io/', {
             method: 'POST',
             headers: {
                 'Authorization' : 'Basic ${auth}',
