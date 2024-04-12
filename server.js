@@ -24,8 +24,7 @@ app.post('/upload', upload.single('document'), async (req, res) => {
         const kaleidoResponse = await fetch('https://u0olkijmyq-u0alug2exc-documentstore.us0-aws.kaleido.io/api/v1', {
             method: 'POST',
             headers: {
-                'Authorization': `Basic ${auth}`,
-                
+                'Authorization' : 'Basic ' + auth,
             },
             body: JSON.stringify({
                 name: name, // Use the file name input from the form
@@ -47,3 +46,6 @@ app.post('/upload', upload.single('document'), async (req, res) => {
 });
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+
+
+//Need to use application credentials in kaleido security tab.
