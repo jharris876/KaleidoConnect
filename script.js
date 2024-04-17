@@ -1,25 +1,28 @@
-document.getElementById('uploadForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const formData = new FormData(this);
-
-    fetch('/upload', {
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('uploadForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const formData = new FormData(this);
+      const fileInput = document.querySelector('input[type="file"]');
+      const fileName = fileInput.files[0].name;
+  
+      fetch(`http://localhost:8080/upload`, {
         method: 'POST',
         body: formData
-    })
-    .then(response => {
+      })
+      .then(response => {
         if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
+          throw new Error('Network response was not ok: ' + response.statusText);
         }
         return response.json();
-    })
-    .then(data => {
+      })
+      .then(data => {
         console.log(data);
-        //Success
         alert('File uploaded successfully!');
-    })
-    .catch(error => {
+      })
+      .catch(error => {
         console.error('Error:', error);
-        //Fail 
         alert('Upload failed: ' + error.message);
+      });
     });
-});
+  });
+  
