@@ -7,6 +7,13 @@ const app = express();
 // Configure multer to use memory storage
 const upload = multer({ storage: multer.memoryStorage() });
 
+app.use(express.static('public'));
+
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname, 'public', 'main.html'));
+  });
+  
+
 // Endpoint to handle file uploads
 app.post('/upload/:filename', upload.single('document'), (req, res) => {
   if (!req.file) {
