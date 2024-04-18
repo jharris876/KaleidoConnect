@@ -5,6 +5,8 @@ const fetch = require('node-fetch');
 const multer = require('multer');
 const app = express();
 
+app.use(express.static('public'));
+
 // Configure multer to use memory storage
 const upload = multer({ storage: multer.memoryStorage() });
 
