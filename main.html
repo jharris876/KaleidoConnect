@@ -1,19 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Upload Form</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Kaleido File Upload</title>
+<link rel="stylesheet" href="style.css"> <!-- Link to your stylesheet -->
 </head>
 <body>
-  <form id="uploadForm" class="upload-form" enctype="multipart/form-data">
-    <h2>Upload Form</h2>
-    <input type="text" name="name" placeholder="Name">
-    <input type="file" name="document">
-    <button type="submit">Upload</button>
-  </form>
 
-  <script src="script.js"></script>
+    <div class="upload-container">
+        <h1>Upload Document to Kaleido</h1>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="fileName">File Name:</label>
+                <input type="text" id="fileName" name="fileName" required>
+            </div>
+            <div class="form-group">
+                <label for="fileInput">Select file:</label>
+                <input type="file" id="fileInput" name="file" required>
+            </div>
+            <button type="submit" class="upload-button">Upload File</button>
+        </form>
+        <div id="result" class="upload-result"></div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>

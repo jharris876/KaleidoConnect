@@ -1,68 +1,48 @@
-const path = require('path');
+require('dotenv').config();
 const express = require('express');
-const formData = require('form-data');
 const fetch = require('node-fetch');
-const multer = require('multer');
+const FormData = require('form-data');
 const app = express();
+const port = 8080;
 
-app.use(express.static(path.join(__dirname, '/uploads'))); // Replace 'someFolder' with your folder name
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
+const fileupload = require('express-fileupload');
+app.use(fileupload());
 
-// Configure multer to use memory storage
-const upload = multer({ dest: 'uploads/' });
+app.use(express.static('KaleidoConnect'));
 
-app.get('/', (req, res) => {
-    res.sendFile('main.html', { root: __dirname });
-  });  
+app.post('/upload', (req, res) => {
+    const fileName = req.query.fileName; // Assuming you're passing the file name as a query parameter
+    const filePath = `test_${fileName}`;
+    const file = req.files.document; // Make sure to use a library like express-fileupload to handle files
+    const pathText = req.body.path; // The text value for the 'path' field
 
-// Endpoint to handle file uploads
-app.post('/upload/:filename', upload.single('document'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).send('No file uploaded.');
-  }
+    const formData = new FormData();
+    formData.append('document', file.data, filePath);
+    formData.append('path', pathText);
 
-  // The name of the input field (i.e. "document") is used to retrieve the uploaded file
-  const file = req.file;
+    const endpoint = `https://u0olkijmyq-u0alug2exc-documentstore.us0-aws.kaleido.io/api/v1/documents/${filePath}`;
+    const auth = `Basic ${Buffer.from(`${process.env.KALEIDO_USERNAME}:${process.env.KALEIDO_PASSWORD}`).toString('base64')}`;
 
-  // Create a form-data object
-  const form = new formData();
-  form.append('file', file.buffer, file.originalname);
-
-  // Setup the authorization header using environment variables
-  const headers = {
-    'Authorization': 'Basic ' + Buffer.from(process.env.KALEIDO_USERNAME + ':' + process.env.KALEIDO_PASSWORD).toString('base64')
-  };
-
-  // Fetch options
-  const requestOptions = {
-    method: 'POST',
-    headers: headers,
-    body: form,
-    redirect: 'follow'
-  };
-
-  // The filename is taken from the URL parameter
-  const kaleidoEndpoint = `https://u0olkijmyq-u0alug2exc-documentstore.us0-aws.kaleido.io/api/v1/documents/${req.params.filename}`;
-
-  // Send the file to Kaleido
-  fetch(kaleidoEndpoint, requestOptions)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
+    fetch(endpoint, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Authorization': auth
+        }
     })
-    .then(result => {
-      console.log('File uploaded successfully to Kaleido:', result);
-      res.status(200).json({ message: 'File uploaded successfully to Kaleido', result });
+    .then(response => response.json())
+    .then(data => {
+        res.json({ hash: data.hash });
     })
     .catch(error => {
-      console.error('Error uploading file to Kaleido:', error);
-      res.status(500).json({ error: error.message });
+        console.error('Error uploading file:', error);
+        res.status(500).send('Error uploading file');
     });
 });
 
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
+app.listen(port, () => {
+    console.log(`Server listening at http://localhost:${port}`);
 });

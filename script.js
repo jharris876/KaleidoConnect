@@ -1,28 +1,21 @@
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('uploadForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-      const formData = new FormData(this);
-      const fileInput = document.querySelector('input[type="file"]');
-      const fileName = fileInput.files[0].name;
-  
-      fetch(`http://localhost:8080`, {
+document.getElementById('uploadForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const fileName = document.getElementById('fileName').value;
+    const file = document.getElementById('fileInput').files[0];
+    const formData = new FormData();
+    formData.append('document', file, fileName);
+
+    fetch('/upload?fileName=' + encodeURIComponent(fileName), {
         method: 'POST',
-        body: formData
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok: ' + response.statusText);
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log(data);
-        alert('File uploaded successfully!');
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('Upload failed: ' + error.message);
-      });
+        body: formData // No headers are needed here; the browser will set the correct multipart/form-data boundary.
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('result').textContent = 'Hash: ' + data.hash;
+    })
+    .catch(error => {
+        console.error('Error uploading file:', error);
+        document.getElementById('result').textContent = 'Upload failed.';
     });
-  });
-  
+});
