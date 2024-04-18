@@ -5,14 +5,15 @@ const fetch = require('node-fetch');
 const multer = require('multer');
 const app = express();
 
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, '/uploads'))); // Replace 'someFolder' with your folder name
+
 
 // Configure multer to use memory storage
-const upload = multer({ storage: multer.memoryStorage() });
+const upload = multer({ dest: 'uploads/' });
 
-app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname, 'main.html'));
-  });
+app.get('/', (req, res) => {
+    res.sendFile('main.html', { root: __dirname });
+  });  
 
 // Endpoint to handle file uploads
 app.post('/upload/:filename', upload.single('document'), (req, res) => {
