@@ -13,6 +13,10 @@ app.use(fileUpload());
 
 app.use(express.static('KaleidoConnect'));
 
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/KaleidoConnect/main.html');
+});
+
 app.post('/upload', (req, res) => {
     const fileName = req.query.fileName; // Assuming you're passing the file name as a query parameter
     const filePath = `test_${fileName}`;

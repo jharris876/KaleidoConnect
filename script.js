@@ -6,16 +6,15 @@ document.getElementById('uploadForm').addEventListener('submit', function(event)
     const formData = new FormData();
     formData.append('document', file, fileName);
 
-    fetch('/upload?fileName=' + encodeURIComponent(fileName), {
+    const endpoint = 'http://localhost:8080/upload?fileName=' + encodeURIComponent(fileName);
+
+    fetch(endpoint, {
         method: 'POST',
-        body: formData // No headers are needed here; the browser will set the correct multipart/form-data boundary.
+        body: formData
     })
     .then(response => response.json())
     .then(data => {
         document.getElementById('result').textContent = 'Hash: ' + data.hash;
     })
-    .catch(error => {
-        console.error('Error uploading file:', error);
-        document.getElementById('result').textContent = 'Upload failed.';
-    });
+    .catch(error => console.error('Error uploading file:', error));
 });
