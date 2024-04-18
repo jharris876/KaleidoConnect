@@ -8,8 +8,8 @@ const port = 8080;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-const fileupload = require('express-fileupload');
-app.use(fileupload());
+const fileUpload = require('express-fileupload');
+app.use(fileUpload());
 
 app.use(express.static('KaleidoConnect'));
 
