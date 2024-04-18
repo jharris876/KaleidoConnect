@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const fileInput = document.querySelector('input[type="file"]');
       const fileName = fileInput.files[0].name;
   
-      fetch(`http://localhost:8080/upload`, {
+      fetch(`http://localhost:8080`, {
         method: 'POST',
         body: formData
       })
