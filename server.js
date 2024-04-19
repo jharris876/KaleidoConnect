@@ -11,7 +11,7 @@ app.use(express.json());
 const fileUpload = require('express-fileupload');
 app.use(fileUpload());
 
-app.use(express.static(__dirname + '/KaleidoConnect'));
+app.use(express.static(__dirname + '/'));
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/KaleidoConnect/main.html');
