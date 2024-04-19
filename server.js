@@ -28,16 +28,9 @@ app.post('/upload', (req, res) => {
     contentType: file.mimetype,
   });
 
-  const auth = 'Basic ' + Buffer.from(`${process.env.KALEIDO_USERNAME}:${process.env.KALEIDO_PASSWORD}`).toString('base64');
+  const auth = 'Basic ' + Buffer.from(`u0b0mwaoyh:SN8WsPpESZt0Cw-AcxjjGJU17bTd7jWQdAtszjKtOQE`).toString('base64');
   
   const endpoint = `https://u0olkijmyq-u0alug2exc-documentstore.us0-aws.kaleido.io/api/v1/documents/${fileName}`;
-
-  const username = "u0b0mwaoyh";
-  const password = "SN8WsPpESZt0Cw-AcxjjGJU17bTd7jWQdAtszjKtOQE";
-  const manualEncodedCredentials = Buffer.from(`${username}:${password}`).toString('base64');
-
-  console.log(manualEncodedCredentials);
-
 
   fetch(endpoint, {
     method: 'POST',
