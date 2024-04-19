@@ -3,9 +3,9 @@ document.getElementById('uploadForm').addEventListener('submit', function(event)
   
     const fileInput = document.getElementById('fileInput').files[0];
     const formData = new FormData();
-    formData.append('document', fileInput); // 'document' is the key for the file
+    formData.append('document', fileInput); 
   
-    // The 'path' key is not needed since you are setting the file name in the URL on the server side
+    
     fetch('/upload', {
       method: 'POST',
       body: formData

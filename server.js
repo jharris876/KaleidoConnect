@@ -28,6 +28,7 @@ app.post('/upload', (req, res) => {
     contentType: file.mimetype,
   });
 
+  //Need to not hardcode auth and make envvars for the user and password.
   const auth = 'Basic ' + Buffer.from(`u0b0mwaoyh:SN8WsPpESZt0Cw-AcxjjGJU17bTd7jWQdAtszjKtOQE`).toString('base64');
   
   const endpoint = `https://u0olkijmyq-u0alug2exc-documentstore.us0-aws.kaleido.io/api/v1/documents/${fileName}`;
