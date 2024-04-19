@@ -1,6 +1,7 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const fetch = require('node-fetch');
+const FormData = require('form-data');
 const app = express();
 const port = 8080;
 
@@ -13,6 +14,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/upload', (req, res) => {
+    console.log(req.files.document);
   if (!req.files || !req.files.document) {
     return res.status(400).send('No file uploaded.');
   }
