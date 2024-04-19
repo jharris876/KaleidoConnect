@@ -32,7 +32,12 @@ app.post('/upload', (req, res) => {
   
   const endpoint = `https://u0olkijmyq-u0alug2exc-documentstore.us0-aws.kaleido.io/api/v1/documents/${fileName}`;
 
-  console.log(`Authorization header: ${auth}`);
+  const username = "u0b0mwaoyh";
+  const password = "SN8WsPpESZt0Cw-AcxjjGJU17bTd7jWQdAtszjKtOQE";
+  const manualEncodedCredentials = Buffer.from(`${username}:${password}`).toString('base64');
+
+  console.log(manualEncodedCredentials);
+
 
   fetch(endpoint, {
     method: 'POST',
