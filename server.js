@@ -32,6 +32,8 @@ app.post('/upload', (req, res) => {
   
   const endpoint = `https://u0olkijmyq-u0alug2exc-documentstore.us0-aws.kaleido.io/api/v1/documents/${fileName}`;
 
+  console.log(`Authorization header: ${auth}`);
+
   fetch(endpoint, {
     method: 'POST',
     body: formData,
