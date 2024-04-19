@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const fetch = require('node-fetch');
@@ -14,26 +15,29 @@ app.get('/', (req, res) => {
 });
 
 app.post('/upload', (req, res) => {
-    console.log(req.files.document);
-  if (!req.files || !req.files.document) {
+  if (!req.files || Object.keys(req.files).length === 0) {
     return res.status(400).send('No file uploaded.');
   }
 
   const file = req.files.document;
   const fileName = file.name;
-  const filePath = `/v1/documents/${fileName}`;
+  
+  const formData = new FormData();
+  formData.append('document', file.data, {
+    filename: fileName,
+    contentType: file.mimetype,
+  });
 
   const auth = 'Basic ' + Buffer.from(`${process.env.KALEIDO_USERNAME}:${process.env.KALEIDO_PASSWORD}`).toString('base64');
-  const endpoint = `https://u0olkijmyq-u0alug2exc-documentstore.us0-aws.kaleido.io/api${filePath}`;
-
-  const formData = new FormData();
-  formData.append('document', file.data, fileName);
+  
+  const endpoint = `https://u0olkijmyq-u0alug2exc-documentstore.us0-aws.kaleido.io/api/v1/documents/${fileName}`;
 
   fetch(endpoint, {
     method: 'POST',
     body: formData,
     headers: {
-      'Authorization': auth
+      'Authorization': auth,
+      ...formData.getHeaders(),
     },
   })
   .then(apiResponse => {
