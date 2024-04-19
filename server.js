@@ -14,7 +14,7 @@ app.use(fileUpload());
 app.use(express.static(__dirname + '/'));
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/KaleidoConnect/main.html');
+    res.sendFile(__dirname + '/main.html');
 });
 
 app.post('/upload', (req, res) => {
